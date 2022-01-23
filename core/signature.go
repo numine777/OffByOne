@@ -6,8 +6,8 @@ import (
 )
 
 type Signature struct {
-	Params  []string
-	Outputs []string
+	Params  []reflect.Type
+	Outputs []reflect.Type
 }
 
 func GetSignature(f reflect.Value) (Signature, error) {
@@ -20,13 +20,13 @@ func GetSignature(f reflect.Value) (Signature, error) {
 	signature := Signature{}
 	for i := 0; i < t.NumIn(); i++ {
 		paramsSlice := signature.Params
-		paramsSlice = append(paramsSlice, t.In(i).String())
+		paramsSlice = append(paramsSlice, t.In(i))
 		signature.Params = paramsSlice
 	}
 	if numOut := t.NumOut(); numOut > 0 {
 		for i := 0; i < t.NumOut(); i++ {
 			outputsSlice := signature.Outputs
-			outputsSlice = append(outputsSlice, t.Out(i).String())
+			outputsSlice = append(outputsSlice, t.Out(i))
 			signature.Outputs = outputsSlice
 
 		}

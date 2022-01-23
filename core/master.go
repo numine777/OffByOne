@@ -2,24 +2,26 @@ package core
 
 import (
 	"fmt"
-	"reflect"
-	"runtime"
 )
 
 type Master interface {
-	PublishPost(string) (string, error)
-	GetPost(string) (string, error)
-	UpdatePost(string) (string, error)
-	DeletePost(string) (string, error)
+	PublishPost(PostId) (string, error)
+	GetPost(PostId) (string, error)
+	UpdatePost(PostId) (string, error)
+	DeletePost(PostId) (string, error)
 }
 
-type Api struct {}
+type Api struct{}
 
 type post struct {
 	id      string
 	Title   string `json:"title"`
 	Content string `json:"content"`
 	Author  string `json:"author"`
+}
+
+type PostId struct {
+    Id string `json:"id"`
 }
 
 type Answer struct {
@@ -32,27 +34,22 @@ type Question struct {
 	Answers []string
 }
 
-func GetFunctionName(f interface{}) string {
-	return runtime.FuncForPC(reflect.ValueOf(f).Pointer()).Name()
-}
-
-func (a Api) UpdatePost(id string) (string, error) {
+func (a Api) UpdatePost(id PostId) (string, error) {
 	return fmt.Sprint("Post updated"), nil
 }
 
-func (a Api) GetPost(id string) (string, error) {
+func (a Api) GetPost(id PostId) (string, error) {
 	return fmt.Sprint("Post getd"), nil
 }
 
-func (a Api) PublishPost(id string) (string, error) {
+func (a Api) PublishPost(id PostId) (string, error) {
 	return fmt.Sprint("Post publishd"), nil
 }
 
-func (a Api) DeletePost(id string) (string, error) {
+func (a Api) DeletePost(id PostId) (string, error) {
 	return fmt.Sprint("Post deleted"), nil
 }
 
 func GetApi() Master {
-    return Api{}
+	return Api{}
 }
-

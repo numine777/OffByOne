@@ -9,36 +9,34 @@ import (
 )
 
 func handlePost(handler reflect.Value, request *http.Request, writer http.ResponseWriter) {
-    if request.Body == nil {
-        http.Error(writer, "Please send a request body", 400)
-        return
-    }
-	decoder := json.NewDecoder(request.Body)
-
-	var parsed interface{}
-	err := decoder.Decode(&parsed)
-	if err != nil {
-		panic(err)
+	if request.Body == nil {
+		http.Error(writer, "Please send a request body", 400)
+		return
 	}
-
 	sig, err := core.GetSignature(handler)
 	if err != nil {
 		panic(err)
 	}
-	pMap := reflect.ValueOf(parsed)
-	for i, key := range pMap.MapKeys() {
-		val := pMap.MapIndex(key)
-		if val.Type().String() != sig.Params[i] {
-			err := fmt.Errorf("Input of type %v do not match the parameter of type %v", val.Type().String(), sig.Params[i])
-			http.Error(writer, err.Error(), 500)
-		}
+	decoder := json.NewDecoder(request.Body)
+
+    parsed := reflect.New(sig.Params[0])
+    elem := parsed.Interface()
+	err = decoder.Decode(&elem)
+	if err != nil {
+		panic(err)
 	}
-	body := reflect.ValueOf(handler).Call(pMap.MapKeys())
-    json.NewEncoder(writer).Encode(body)
+	fmt.Printf("%v\n", parsed.Elem().FieldByName("Id"))
+
+	params := make([]reflect.Value, len(sig.Params))
+    params[0] = parsed.Elem()
+
+	body := handler.Call(params)
+    fmt.Printf(body[0].String())
+	json.NewEncoder(writer).Encode(body)
 }
 
-func superSmartPost (handler reflect.Value) func (w http.ResponseWriter, r *http.Request) {
-    return func(w http.ResponseWriter, r *http.Request) {
-        handlePost(handler, r, w)
-    }
+func superSmartPost(handler reflect.Value) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		handlePost(handler, r, w)
+	}
 }

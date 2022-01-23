@@ -8,7 +8,7 @@ import (
 	"reflect"
 )
 
-func handlePost(handler interface{}, request *http.Request, writer http.ResponseWriter) {
+func handlePost(handler reflect.Value, request *http.Request, writer http.ResponseWriter) {
     if request.Body == nil {
         http.Error(writer, "Please send a request body", 400)
         return
@@ -37,7 +37,7 @@ func handlePost(handler interface{}, request *http.Request, writer http.Response
     json.NewEncoder(writer).Encode(body)
 }
 
-func superSmartPost (handler interface{}) func (w http.ResponseWriter, r *http.Request) {
+func superSmartPost (handler reflect.Value) func (w http.ResponseWriter, r *http.Request) {
     return func(w http.ResponseWriter, r *http.Request) {
         handlePost(handler, r, w)
     }

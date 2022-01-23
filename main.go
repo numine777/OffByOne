@@ -25,8 +25,8 @@ func handleRequests() {
 	methods := reflect.TypeOf(master)
 	// http.HandleFunc("/", homePage)
 	for i := 0; i < methods.NumMethod(); i++ {
-		method := methods.Method(i)
-		methodName := method.Name
+		method := reflect.ValueOf(master).Method(i)
+		methodName := methods.Method(i).Name
 		http.HandleFunc(fmt.Sprintf("/api/%v", methodName), superSmartPost(method))
 	}
 	log.Fatal(http.ListenAndServe(":6969", nil))

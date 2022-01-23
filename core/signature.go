@@ -10,10 +10,10 @@ type Signature struct {
 	Outputs []string
 }
 
-func GetSignature(f interface{}) (Signature, error) {
-    t := reflect.TypeOf(f)
-	if t.String() != "reflect.Method" {
-        fmt.Printf("Received %v\n", t)
+func GetSignature(f reflect.Value) (Signature, error) {
+	t := f.Type()
+	if t.Kind() != reflect.Func {
+		fmt.Printf("Received %v\n", t)
 		return Signature{}, fmt.Errorf("<not a function>")
 	}
 
@@ -26,7 +26,7 @@ func GetSignature(f interface{}) (Signature, error) {
 	if numOut := t.NumOut(); numOut > 0 {
 		for i := 0; i < t.NumOut(); i++ {
 			outputsSlice := signature.Outputs
-			outputsSlice = append(outputsSlice, t.In(i).String())
+			outputsSlice = append(outputsSlice, t.Out(i).String())
 			signature.Outputs = outputsSlice
 
 		}

@@ -19,19 +19,19 @@ func handlePost(handler *reflect.Value, request *http.Request, writer http.Respo
 	}
 	decoder := json.NewDecoder(request.Body)
 
-    parsed := reflect.New(sig.Params[0])
-    elem := parsed.Interface()
+	parsed := reflect.New(sig.Params[0])
+	elem := parsed.Interface()
 	err = decoder.Decode(&elem)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%v\n", parsed.Elem().FieldByName("Id"))
+	fmt.Printf("%v\n", parsed.Elem())
 
 	params := make([]reflect.Value, len(sig.Params))
-    params[0] = parsed.Elem()
+	params[0] = parsed.Elem()
 
 	body := (*handler).Call(params)
-    fmt.Printf(body[0].String())
+	fmt.Printf(body[0].String())
 	json.NewEncoder(writer).Encode(body)
 }
 

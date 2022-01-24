@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 	"log"
 	"net/http"
 	"offByOne/core"
@@ -13,8 +15,8 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: homePage")
 }
 
-func handleRequests() {
-	master := core.GetApi()
+func handleRequests(db *gorm.DB) {
+	master := core.GetApi(db)
 	methods := reflect.TypeOf(master)
 	for i := 0; i < methods.NumMethod(); i++ {
 		method := reflect.ValueOf(master).Method(i)
@@ -25,5 +27,9 @@ func handleRequests() {
 }
 
 func main() {
-	handleRequests()
+	db, err := gorm.Open(sqlite.Open("testdb.sqlite3"), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+	handleRequests(db)
 }

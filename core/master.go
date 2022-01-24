@@ -12,11 +12,12 @@ type Master interface {
 	DeletePost(PostId) (string, error)
 }
 
-type Api struct{}
+type Api struct {
+	Db *gorm.DB
+}
 
 type Post struct {
 	gorm.Model
-	Id      string `json:"id"`
 	Title   string `json:"title"`
 	Content string `json:"content"`
 	Author  string `json:"author"`
@@ -28,14 +29,14 @@ type PostId struct {
 
 type Answer struct {
 	gorm.Model
-	QuestionId string `json:"question_id"`
-	Post       Post   `json:"post"`
+	Question Question `gorm:"foreignKey:Question";json:"question_id"`
+	Post     Post     `gorm:"embedded";json:"post"`
 }
 
 type Question struct {
 	gorm.Model
-	Post    Post     `json:"post"`
-	Answers []string `json:"answer_ids"`
+	Post    Post     `gorm:"embedded";json:"post"`
+	Answers []Answer `gorm:"foreignKey:Answer";json:"answer_ids"`
 }
 
 func (a Api) UpdatePost(id PostId) (string, error) {
@@ -46,14 +47,15 @@ func (a Api) GetPost(id PostId) (string, error) {
 	return fmt.Sprint("Post getd"), nil
 }
 
-func (a Api) PublishPost(id PostId) (string, error) {
-	return fmt.Sprint("Post publishd"), nil
+func (a Api) PublishPost(post Post) (PostId, error) {
+	return publishPost(&post, a.Db)
 }
 
 func (a Api) DeletePost(id PostId) (string, error) {
 	return fmt.Sprint("Post deleted"), nil
 }
 
-func GetApi() Master {
-	return Api{}
+func GetApi(db *gorm.DB) Api {
+	db.AutoMigrate(&Answer{}, &Question{}, &Post{})
+	return Api{Db: db}
 }

@@ -10,8 +10,8 @@ type Signature struct {
 	Outputs []reflect.Type
 }
 
-func GetSignature(f reflect.Value) (Signature, error) {
-	t := f.Type()
+func GetSignature(f *reflect.Value) (Signature, error) {
+	t := (*f).Type()
 	if t.Kind() != reflect.Func {
 		fmt.Printf("Received %v\n", t)
 		return Signature{}, fmt.Errorf("<not a function>")

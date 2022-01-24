@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"gorm.io/gorm"
 )
 
 type Master interface {
@@ -13,25 +14,28 @@ type Master interface {
 
 type Api struct{}
 
-type post struct {
-	id      string
+type Post struct {
+	gorm.Model
+	Id      string `json:"id"`
 	Title   string `json:"title"`
 	Content string `json:"content"`
 	Author  string `json:"author"`
 }
 
 type PostId struct {
-    Id string `json:"id"`
+	Id string `json:"id"`
 }
 
 type Answer struct {
-	Question_id string
-	Post        post
+	gorm.Model
+	QuestionId string `json:"question_id"`
+	Post       Post   `json:"post"`
 }
 
 type Question struct {
-	Post    post
-	Answers []string
+	gorm.Model
+	Post    Post     `json:"post"`
+	Answers []string `json:"answer_ids"`
 }
 
 func (a Api) UpdatePost(id PostId) (string, error) {

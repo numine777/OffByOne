@@ -13,21 +13,13 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: homePage")
 }
 
-func dumbPost(name string) func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Welcome to %v Off By One!", name)
-		fmt.Println("Endpoint Hit: homePage")
-	}
-}
-
 func handleRequests() {
 	master := core.GetApi()
 	methods := reflect.TypeOf(master)
-	// http.HandleFunc("/", homePage)
 	for i := 0; i < methods.NumMethod(); i++ {
 		method := reflect.ValueOf(master).Method(i)
 		methodName := methods.Method(i).Name
-		http.HandleFunc(fmt.Sprintf("/api/%v", methodName), superSmartPost(method))
+		http.HandleFunc(fmt.Sprintf("/api/%v", methodName), superSmartPost(&method))
 	}
 	log.Fatal(http.ListenAndServe(":6969", nil))
 }

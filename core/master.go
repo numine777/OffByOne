@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"github.com/satori/go.uuid"
 	"gorm.io/gorm"
 )
 
@@ -29,14 +30,16 @@ type PostId struct {
 
 type Answer struct {
 	gorm.Model
-	Question Question `gorm:"foreignKey:Question";json:"question_id"`
-	Post     Post     `gorm:"embedded";json:"post"`
+	QId  uuid.UUID `gorm:"primary_key;type:char(36)";json:"question_id"`
+	Post Post      `gorm:"embedded";json:"post"`
+	// Quon Qon `gorm:"foreignKey:Question";json:"question_id"`
 }
 
 type Question struct {
 	gorm.Model
-	Post    Post     `gorm:"embedded";json:"post"`
-	Answers []Answer `gorm:"foreignKey:Answer";json:"answer_ids"`
+	ID      uuid.UUID `gorm:"primary_key;type:char(36)"`
+	Post    Post      `gorm:"embedded";json:"post"`
+	Answers []Answer  `gorm:"foreignKey:QId";json:"answer_ids"`
 }
 
 func (a Api) UpdatePost(id PostId) (string, error) {

@@ -17,21 +17,6 @@ http_archive(
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
-# Declare Go direct dependencies.
-go_repository(
-    name = "io_gorm_driver_sqlite",
-    importpath = "gorm.io/driver/sqlite",
-    sum = "h1:SStaH/b+280M7C8vXeZLz/zo9cLQmIGwwj3cSj7p6l4=",
-    version = "v1.2.6",
-)
-
-go_repository(
-    name = "io_gorm_gorm",
-    importpath = "gorm.io/gorm",
-    sum = "h1:lYREBgc02Be/5lSCTuysZZDb6ffL2qrat6fg9CFbvXU=",
-    version = "v1.22.5",
-)
-
 load("//:deps.bzl", "go_dependencies")
 
 # gazelle:repository_macro deps.bzl%go_dependencies

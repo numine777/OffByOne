@@ -19,6 +19,7 @@
           name = "offByOne-dev-env";
           targetPkgs = pkgs: (with pkgs; [
             bazel_5
+            go_1_18
             git
             glibc
             gcc

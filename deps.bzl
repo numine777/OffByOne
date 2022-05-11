@@ -38,6 +38,12 @@ def go_dependencies():
         version = "v1.0.0",
     )
     go_repository(
+        name = "com_github_satori_go_uuid",
+        importpath = "github.com/satori/go.uuid",
+        sum = "h1:0uYX9dsZ2yD7q2RtLRtPSdGDWzjeM3TbMJP9utgA0ww=",
+        version = "v1.2.0",
+    )
+    go_repository(
         name = "com_github_stretchr_objx",
         importpath = "github.com/stretchr/objx",
         sum = "h1:4G4v2dO3VZwixGIRoQ5Lfboy6nUhCyYzaqnIAPPhYs4=",
@@ -60,4 +66,16 @@ def go_dependencies():
         importpath = "gopkg.in/yaml.v3",
         sum = "h1:dUUwHk2QECo/6vqA44rthZ8ie2QXMNeKRTHCNY2nXvo=",
         version = "v3.0.0-20200313102051-9f266ea9e77c",
+    )
+    go_repository(
+        name = "io_gorm_driver_sqlite",
+        importpath = "gorm.io/driver/sqlite",
+        sum = "h1:SStaH/b+280M7C8vXeZLz/zo9cLQmIGwwj3cSj7p6l4=",
+        version = "v1.2.6",
+    )
+    go_repository(
+        name = "io_gorm_gorm",
+        importpath = "gorm.io/gorm",
+        sum = "h1:lYREBgc02Be/5lSCTuysZZDb6ffL2qrat6fg9CFbvXU=",
+        version = "v1.22.5",
     )

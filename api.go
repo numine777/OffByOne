@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"offByOne/core"
+	"github.com/numine777/OffByOne/core"
 	"reflect"
 )
 

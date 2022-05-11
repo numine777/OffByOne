@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"net/http"
-	"offByOne/core"
+	"github.com/numine777/OffByOne/core"
 	"reflect"
 )
 

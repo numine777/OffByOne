@@ -25,6 +25,7 @@
             gcc
             jdk11
           ]);
+          runScript = "zsh";
         }).env;
       });
 }

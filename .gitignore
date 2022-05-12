@@ -1,3 +1,5 @@
 offByOne
 testdb.sqlite3
 bazel-*
+.envrc
+.direnv/

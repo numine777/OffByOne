@@ -1,5 +1,7 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+load("@io_bazel_rules_go//go:def.bzl", "nogo")
 load("@bazel_gazelle//:def.bzl", "gazelle")
+load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 
 # gazelle:prefix github.com/numine777/OffByOne
 gazelle(name = "gazelle")
@@ -12,6 +14,12 @@ gazelle(
         "-prune",
     ],
     command = "update-repos",
+)
+
+nogo(
+    name = "my_vet",
+    vet = True,
+    visibility = ["//visibility:public"],
 )
 
 go_library(
@@ -33,4 +41,9 @@ go_binary(
     name = "OffByOne",
     embed = [":OffByOne_lib"],
     visibility = ["//visibility:public"],
+)
+
+go_image(
+    name = "app_image",
+    binary = ":OffByOne",
 )

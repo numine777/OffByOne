@@ -18,17 +18,18 @@ func (a TestApi) Foo(in string) (int, error) {
 }
 
 func TestGetSignature(t *testing.T) {
-	expected := Signature{}
-
 	master := TestApi{}
 	method := reflect.ValueOf(master).Method(0)
 
 	var in string
 	var succ int
 
-	expected.Params = append(expected.Params, reflect.TypeOf(in))
-	expected.Outputs = append(expected.Outputs, reflect.TypeOf(succ))
-	expected.Outputs = append(expected.Outputs, reflect.TypeOf((*error)(nil)).Elem())
+	params := []reflect.Type{reflect.TypeOf(in)}
+	outputs := []reflect.Type{reflect.TypeOf(succ), reflect.TypeOf((*error)(nil)).Elem()}
+	expected := Signature{
+		params,
+		outputs,
+	}
 
 	res, err := GetSignature(&method)
 	if err != nil {

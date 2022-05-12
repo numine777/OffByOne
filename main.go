@@ -23,6 +23,7 @@ func handleRequests(db *gorm.DB) {
 		methodName := methods.Method(i).Name
 		http.HandleFunc(fmt.Sprintf("/api/%v", methodName), superSmartPost(&method))
 	}
+    http.HandleFunc(fmt.Sprintf("/"), homePage)
 	log.Fatal(http.ListenAndServe(":6969", nil))
 }
 

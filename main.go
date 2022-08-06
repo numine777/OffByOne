@@ -24,6 +24,7 @@ func handleRequests(db *gorm.DB) {
 		http.HandleFunc(fmt.Sprintf("/api/%v", methodName), superSmartPost(&method))
 	}
     http.HandleFunc(fmt.Sprintf("/"), homePage)
+    fmt.Println("Successfully setup running on port 6969!")
 	log.Fatal(http.ListenAndServe(":6969", nil))
 }
 
